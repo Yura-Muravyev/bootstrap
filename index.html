@@ -9,26 +9,27 @@
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <form class="was-validated">
+        <form id="form" action="#" method="post">
+            <label> Имя 
+                <input id="name" class="form-control" name="name" type="text">
+            </label>
 
-                    <div class="mb-3">
-                        <label for="validationName" class="form-label">Имя</label>
-                        <input type="text" class="form-check-inline form-control-sm invalid" id="validationName" placeholder="Ваше имя" required>
-                        <div class="invalid-feedback">
-                            Введите ваше имя
-                        </div>
-                    </div>
+            <label> Фамилия 
+                <input id="sureName" class="form-control" name="surename" type="text">
+            </label>
 
-                    <div class="mb-3">
-                      <button class="btn btn-primary" type="submit" disabled>Submit form</button>
-                    </div>
-                  </form>
+            <label> Отчество 
+                <input id="middleName" class="form-control" name="middlename" type="text">
+            </label>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" type="submit">Добавить</button>
+                <button class="btn btn-secondary" type="reset">Очистить</button>
             </div>
-        </div>
+        </form>
     </div>
 
-    <script src="./js/bootstrap.js"></script>
+
+    <script src="./js/main.js"></script>
 </body>
 </html>
