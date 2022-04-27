@@ -1,5 +1,11 @@
 const studensData = [];
 
+
+
+function timeСalculation(birthday) {
+  let
+}
+
 function addUserTable() {
   let tbody = document.querySelector('tbody');
 
@@ -8,11 +14,10 @@ function addUserTable() {
     tr.innerHTML =
       '<td>' + studensData[i].sureName + ' ' + studensData[i].name + ' ' + studensData[i].middleName +'</td>' + 
       '<td>' + studensData[i].faculty + '</td>' + 
-      '<td>' + studensData[i].birthday + '</td>' + 
+      '<td>' + +studensData[i].birthday.toLocaleDateString() + '</td>' + 
       '<td>' + studensData[i].startTraining + '</td>'; 
     tbody.appendChild(tr);
   }
-
 }
 
 
@@ -28,8 +33,9 @@ function setForm() {
     startTraining: FORM.elements.startTraining.value,
   }
   
+  timeСalculation(user.birthday);
+
   studensData.push(user);
-  addUserTable();
 }
 
 const submit = document.querySelector('#form');

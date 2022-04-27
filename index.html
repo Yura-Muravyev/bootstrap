@@ -9,37 +9,41 @@
 </head>
 <body>
     <div class="container">
+
         <form name="form" id="form" action="#" method="post">
-            <label> Фамилия 
-                <input id="sureName" class="form-control" name="sureName" type="text">
-            </label>
+            <div class="row">
+                <label class="col-6 mb-2"> Фамилия 
+                    <input id="sureName" class="form-control" name="sureName" type="text">
+                </label>
 
-            <label> Имя 
-                <input id="name" class="form-control" name="name" type="text">
-            </label>
+                <label class="col-6 mb-2"> Факультет 
+                    <input id="faculty" class="form-control" name="faculty" type="text">
+                </label>
+    
+                <label class="col-6 mb-2"> Имя 
+                    <input id="name" class="form-control" name="name" type="text">
+                </label>
+    
 
-            <label> Отчество 
-                <input id="middleName" class="form-control" name="middleName" type="text">
-            </label>
+                <label class="col-6 mb-2"> Дата рождения 
+                    <input id="birthday" class="form-control" name="birthday" type="date">
+                </label>
+    
+                <label class="col-6 mb-2"> Отчество 
+                    <input id="middleName" class="form-control" name="middleName" type="text">
+                </label>
 
-            <label> Факультет 
-                <input id="faculty" class="form-control" name="faculty" type="text">
-            </label>
-
-            <label> Дата рождения 
-                <input id="birthday" class="form-control" name="birthday" type="date">
-            </label>
-
-            <label> Год поступления 
-                <input id="startTraining" class="form-control" name="startTraining" type="number " min="2000">
-            </label>
-
-
-            <div class="btn-group">
-                <button class="btn btn-primary" type="submit">Добавить</button>
-                <button class="btn btn-secondary" type="reset">Очистить</button>
+                <label class="col-6 mb-2"> Год поступления 
+                    <input id="startTraining" class="form-control" name="startTraining" type="number " min="2000">
+                </label>
+    
+                <div class="btn-group mb-5">
+                    <button class="btn btn-primary" type="submit">Добавить</button>
+                    <button class="btn btn-secondary" type="reset">Очистить</button>
+                </div>
             </div>
         </form>
+
 
         <table class="table">
             <thead>
@@ -51,12 +55,6 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>Муравьёв Юрий Николаевич</th>
-                <td>Правовое обеспечение национальной безопасности</td>
-                <td>09.07.1994 (27 лет)</td>
-                <td>2000 - 2004 (закончил)</td>
-              </tr>
             </tbody>
           </table>
     </div>
