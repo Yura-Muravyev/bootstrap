@@ -9,7 +9,7 @@
       tr.innerHTML =
           '<td>' + item.sureName+ ' ' + item.name + ' ' + item.middleName +'</td>' + 
           '<td>' + item.faculty + '</td>' + 
-          '<td>' + item.birthday + '</td>' + 
+          '<td>' + item.birthday + ` (${item.age} лет)` + '</td>' + 
           '<td>' + item.startTraining + '</td>';
       tbody.appendChild(tr);
     });
@@ -29,8 +29,8 @@
     let startTraining = FORM.elements.startTraining.value
     let faculty = FORM.elements.faculty.value;
     
-    let age = ((new Date().getTime() - new Date(FORM.elements.birthday.valueAsDate)) / (24 * 3600 * 365.25 * 1000)) | 0;
-    let birthday = FORM.elements.birthday.valueAsDate.getDate() + '.' + FORM.elements.birthday.valueAsDate.getMonth()  + '.' + FORM.elements.birthday.valueAsDate.getFullYear();
+    let age = ((new Date() - new Date(FORM.elements.birthday.valueAsDate)) / (24 * 3600 * 365.25 * 1000)) | 0;
+    let birthday = FORM.elements.birthday.valueAsDate.toISOString().split('T')[0].replace('/-t/g', '.');
 
     return {
       sureName,
@@ -56,28 +56,25 @@
       startTraining: studentDate.startTraining,
     }
     data.push(user);
-    return user
-  }
-  
-  function addStudentsTable() { 
-    let user = createStudentObj();
+
     let tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
     tr.innerHTML =
         '<td>' + user.sureName+ ' ' + user.name + ' ' + user.middleName +'</td>' + 
         '<td>' + user.faculty + '</td>' + 
-        '<td>' + user.birthday + ` ${user.age}` + '</td>' + 
+        '<td>' + user.birthday + ` (${user.age} лет)` + '</td>' + 
         '<td>' + user.startTraining + '</td>';
     tbody.appendChild(tr);
+
   }
   
-  
+
   const submit = document.querySelector('#form');
   submit.addEventListener('submit', function (event) {
     event.preventDefault();
   
     createStudentObj(studentsData);
     getLS(studentsData);
-    addStudentsTable();
+
   });
 })()
