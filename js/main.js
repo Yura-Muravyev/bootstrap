@@ -21,16 +21,26 @@
   }
 
 
+  function getBirthday(date) {
+    let res = date.toISOString().split('T')[0].split('-');
+    let fres = res[2] + '.' +  res[1] + '.' + res[0];
+    return fres
+  }
+
+  function finishTraining(start) {
+    
+  }
+
   function getForm() {
     const FORM = document.forms.form;
     let sureName = FORM.elements.sureName.value;
     let name = FORM.elements.name.value;
     let middleName = FORM.elements.middleName.value;
-    let startTraining = FORM.elements.startTraining.value
+    let startTraining = finishTraining(FORM.elements.startTraining.value)
     let faculty = FORM.elements.faculty.value;
-    
     let age = ((new Date() - new Date(FORM.elements.birthday.valueAsDate)) / (24 * 3600 * 365.25 * 1000)) | 0;
-    let birthday = FORM.elements.birthday.valueAsDate.toISOString().split('T')[0].replace('/-t/g', '.');
+    let birthday = getBirthday(FORM.elements.birthday.valueAsDate)
+    console.log(birthday);
 
     return {
       sureName,
