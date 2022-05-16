@@ -10,31 +10,31 @@
 <body>
     <div class="container">
 
-        <form name="form" id="form" action="#" method="post">
+        <form id="addStudent" action="#" method="post">
             <div class="row">
                 <label class="col-6 mb-2"> Фамилия 
-                    <input id="sureName" class="form-control" name="sureName" type="text" tabindex="1">
+                    <input id="input-sureName" class="form-control"  type="text" tabindex="1">
                 </label>
 
                 <label class="col-6 mb-2"> Факультет 
-                    <input id="faculty" class="form-control" name="faculty" type="text" tabindex="4">
+                    <input id="input-faculty" class="form-control" type="text" tabindex="4">
                 </label>
     
                 <label class="col-6 mb-2"> Имя 
-                    <input id="name" class="form-control" name="name" type="text" tabindex="2">
+                    <input id="input-name" class="form-control"  type="text" tabindex="2">
                 </label>
     
 
                 <label class="col-6 mb-2"> Дата рождения 
-                    <input id="birthday" class="form-control" name="birthday" type="date" tabindex="5">
+                    <input id="input-birthday" class="form-control" type="date" tabindex="5">
                 </label>
     
                 <label class="col-6 mb-2"> Отчество 
-                    <input id="middleName" class="form-control" name="middleName" type="text" tabindex="3">
+                    <input id="input-middleName" class="form-control" type="text" tabindex="3">
                 </label>
 
                 <label class="col-6 mb-2"> Год поступления 
-                    <input id="startTraining" class="form-control" name="startTraining" type="number " min="2000" tabindex="6">
+                    <input id="input-startTraining" class="form-control" type="number " min="2000" tabindex="6">
                 </label>
     
                 <div class="btn-group mb-5">
@@ -47,14 +47,14 @@
 
         <table class="table">
             <thead>
-              <tr>
-                <th scope="col">ФИО</th>
-                <th scope="col">Факультет</th>
-                <th scope="col">Дата рождения</th>
-                <th scope="col">Годы обучения</th>
+              <tr id="studentsListTR">
+                <th data-column="fio" scope="col">ФИО</th>
+                <th data-column="birthday" scope="col">Дата рождения</th>
+                <th data-column="faculty" scope="col">Факультет</th>
+                <th data-column="startTraining" scope="col">Годы обучения</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="students-list">
             </tbody>
           </table>
     </div>
@@ -62,6 +62,6 @@
 
 
 
-    <script src="./js/main.js"></script>
+    <script defer src="./js/students.js"></script>
 </body>
 </html>
