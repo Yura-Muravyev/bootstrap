@@ -37,7 +37,10 @@ let studentsList = [
 const $studentsListTable = document.getElementById('studentsListTR'),
     $studentsListTH = document.querySelectorAll('th');
 
-let column = 'fio'
+let fioValue = document.getElementById('')
+
+let column = 'fio',
+    columnDir = true;
 
 // Соединяем ФИО
 function getFullName(name, middleName, sureName ) {
@@ -91,22 +94,39 @@ function newStudentTR(student) {
     return $studentTR;
 };
 
+// сортировка столбцов таблицы по параметрам
+function sortedUsersList(prop, dir) {
+    const studentsListCopy = [...studentsList];
+    return studentsListCopy.sort( (studentA,studentB) => {
+        if (!dir ? studentA[prop] < studentB[prop] : studentA[prop] > studentB[prop]) 
+        return -1;
+    });
+}
 
-
-function getSortStudents(params) {
-    
+// фильтрация таблицы
+function filterUsersList(array, prop, value) {
+    let resaultFilter = [],
+    copy = [...array];
+for (const item of copy) {
+    if (String(item[prop]).toLowerCase().includes(value) == true) res.push(item)
+}
+return resaultFilter
 }
 
 // отрисовка таблицы
 function render() {
-    const studentsListCopy = [...studentsList];
+    let studentsListCopy = [...studentsList];
+
+    studentsListCopy = sortedUsersList(column, columnDir);
+    // studentsListCopy = filterUsersList();
+
 
     $students_list.innerHTML = '';
     for (const student of studentsListCopy) {
         $students_list.append(newStudentTR(student));
     }
-
 };
+
 
 // получаем данные из формы 
 document.getElementById('addStudent').addEventListener('submit', function(event) {
@@ -120,16 +140,15 @@ document.getElementById('addStudent').addEventListener('submit', function(event)
         birthday: new Date(document.getElementById('input-birthday').valueAsDate),
 };
     studentsList.push(newStudent);
-
     render();
-    console.log('rendr()');
-
 })
 
+// события клика по заголовкам таблицы для сортировки
 $studentsListTH.forEach(element => {
     element.addEventListener('click', function () {
         column = this.dataset.column;
+        columnDir = !columnDir
         render();
-        console.log('rendr()');
     })
 })
+render();
