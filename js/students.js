@@ -15,7 +15,7 @@ let studentsList = [
     sureName: "Смирнов",
     fullName: "Смирнов Петр Владимирович",
     teachStart: 2018,
-    faculty: "Юридический",
+    faculty: "Исторический",
     birthday: new Date(1993, 10, 25),
     },
 
@@ -33,7 +33,7 @@ let studentsList = [
     sureName: "Иванов",
     fullName: "Иванов Иван Иванович",
     teachStart: 2004,
-    faculty: "Юридический",
+    faculty: "Исторический",
     birthday: new Date(1988, 11, 25),
     },
 ]; 
@@ -93,23 +93,11 @@ function newStudentTR(student) {
     return $studentTR;
 };
 
-// сортировка столбцов таблицы по параметрам
-let column = '', 
-columnDir = true;
-
-function sortedUsersList(prop, dir) {
-    const studentsListCopy = [...studentsList];
-    return studentsListCopy.sort( (studentA,studentB) => {
-        if (!dir ? studentA[prop] < studentB[prop] : studentA[prop] > studentB[prop]) 
-        return -1;
-    });
-}
-
 function getFilterInput() {
-    const inputFioValueFilter = document.getElementById('filter-fio').value.toLowerCase();
-    const inputBirthdayValueFilter = document.getElementById('filter-fio').valueAsDate;
-    const inputFacultyValueFilter = document.getElementById('filter-fio').value.toLowerCase();
-    const inputTeachStartValueFilter = document.getElementById('filter-fio').value.trim;
+    const inputFioValueFilter = document.getElementById('filter-fio').value.toLowerCase().trim();
+    const inputBirthdayValueFilter = document.getElementById('filter-birthday').value.trim();
+    const inputFacultyValueFilter = document.getElementById('filter-faculty').value.toLowerCase().trim();
+    const inputTeachStartValueFilter = document.getElementById('filter-teachStart').value.trim();
 
     return {
         inputFioValueFilter,
@@ -119,24 +107,45 @@ function getFilterInput() {
     }
 }
 
-// фильтрация таблицы
-function filterUsersList(prop, value) {
-    let resultFilter = [];
-    let studentsListCopy = [...studentsList];
+// сортировка столбцов таблицы по параметрам
+let column = '', 
+columnDir = true;
 
-    for (const item of studentsListCopy) {
-        if ((item[prop]).includes(String(value)) === true) {
-            resultFilter.push(item)
-        } 
-        
-    }
-    return resultFilter;
+function sortedUsersList(arr, prop, dir) {
+    const studentsListCopy = [...arr];
+    return studentsListCopy.sort( (studentA,studentB) => {
+        if (!dir ? studentA[prop] < studentB[prop] : studentA[prop] > studentB[prop]) 
+        return -1;
+    }); 
 }
 
+// фильтрация таблицы
+function filterUsersList(arr, prop, value) {
+    let resultFilter = [];
+    let studentsListCopy = [...arr];
+
+    for (let item of studentsListCopy) {
+        if (String(item[prop]).toLowerCase().includes(String(value))) {
+            resultFilter.push(item);
+        }
+    }
+    return resultFilter
+    
+}
+
+
 // отрисовка таблицы
-function render() {
-    let studentsListCopy = [...studentsList];
-    studentsListCopy = sortedUsersList(column, columnDir);
+function render(arr) {
+    let studentsListCopy = [...arr];
+    
+    studentsListCopy = sortedUsersList(studentsList, column, columnDir);
+    
+    studentsListCopy = filterUsersList(studentsListCopy, 'fullName', getFilterInput().inputFioValueFilter)
+    studentsListCopy = filterUsersList(studentsListCopy, 'birthday', getFilterInput().inputBirthdayValueFilter)
+    studentsListCopy = filterUsersList(studentsListCopy, 'faculty', getFilterInput().inputFacultyValueFilter)
+    studentsListCopy = filterUsersList(studentsListCopy, 'teachStart', getFilterInput().inputTeachStartValueFilter)
+
+    
 
     $students_list.innerHTML = '';
     for (const student of studentsListCopy) {
@@ -158,7 +167,7 @@ document.getElementById('addStudent').addEventListener('submit', function(event)
         birthday: new Date(document.getElementById('input-birthday').valueAsDate),
 };
     studentsList.push(newStudent);
-    render();
+    render(studentsList);
 })
 
 // события клика по заголовкам таблицы для сортировки
@@ -166,14 +175,14 @@ $studentsListTH.forEach(element => {
     element.addEventListener('click', function () {
         column = this.dataset.column;
         columnDir = !columnDir
-        render();
+        render(studentsList);
     })
 })
 
 // события кнопик фильтрации
 document.getElementById('filter-form').addEventListener('submit', function (event) {
     event.preventDefault();
-    console.log(filterUsersList('fullName', getFilterInput().inputBirthdayValueFilter));
+    render(studentsList)
     
 })
-render();
+render(studentsList);
