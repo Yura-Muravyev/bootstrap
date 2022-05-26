@@ -1,10 +1,19 @@
 
 // массив студентов
 let studentsList = [
-    {name: "Юрий",
+    {name: "Владимир",
     middleName: "Николавеич",
-    sureName: "Муравьёв",
-    fullName: "Муравьёв Юрий Николавеич",
+    sureName: "Кубанов",
+    fullName: "Кубанов Владимир Николавеич",
+    teachStart: 2012,
+    faculty: "Юридический",
+    birthday: new Date(1994, 6, 9),
+    },
+
+    {name: "Владимир",
+    middleName: "Николавеич",
+    sureName: "Кубанов",
+    fullName: "Кубанов Владимир Николавеич",
     teachStart: 2012,
     faculty: "Юридический",
     birthday: new Date(1994, 6, 9),
@@ -95,13 +104,13 @@ function newStudentTR(student) {
 
 function getFilterInput() {
     const inputFioValueFilter = document.getElementById('filter-fio').value.toLowerCase().trim();
-    const inputBirthdayValueFilter = document.getElementById('filter-birthday').value.trim();
     const inputFacultyValueFilter = document.getElementById('filter-faculty').value.toLowerCase().trim();
     const inputTeachStartValueFilter = document.getElementById('filter-teachStart').value.trim();
+    const inputTeachFinishValueFilter = document.getElementById('filter-teachFinish').value.trim();
 
     return {
         inputFioValueFilter,
-        inputBirthdayValueFilter,
+        inputTeachFinishValueFilter,
         inputFacultyValueFilter,
         inputTeachStartValueFilter
     }
@@ -118,6 +127,25 @@ function sortedUsersList(arr, prop, dir) {
         return -1;
     }); 
 }
+
+function filterFIO(arr, seaObj) {
+    let res = []
+    ListCopy = [...arr];
+    ListCopy.forEach(elem => {
+        let entries = Object.entries(elem);
+
+        for (let [key, value] of entries) {
+            if (String(value).toLocaleLowerCase().includes(seaObj)) {
+                if (res.includes(elem)){
+                } else {
+                    res.push(elem)
+                }
+            }
+       }
+    })
+    return res
+}
+
 
 // фильтрация таблицы
 function filterUsersList(arr, prop, value) {
@@ -139,11 +167,12 @@ function render(arr) {
     let studentsListCopy = [...arr];
     
     studentsListCopy = sortedUsersList(studentsList, column, columnDir);
-    
-    studentsListCopy = filterUsersList(studentsListCopy, 'fullName', getFilterInput().inputFioValueFilter)
-    studentsListCopy = filterUsersList(studentsListCopy, 'birthday', getFilterInput().inputBirthdayValueFilter)
+
+    studentsListCopy = filterFIO(studentsListCopy, getFilterInput().inputFioValueFilter)
+    // studentsListCopy = filterUsersList(studentsListCopy, 'fullName', getFilterInput().inputFioValueFilter)
     studentsListCopy = filterUsersList(studentsListCopy, 'faculty', getFilterInput().inputFacultyValueFilter)
     studentsListCopy = filterUsersList(studentsListCopy, 'teachStart', getFilterInput().inputTeachStartValueFilter)
+    studentsListCopy = filterUsersList(studentsListCopy, 'teachStart', getFilterInput().inputTeachFinishValueFilter)
 
     
 
@@ -164,8 +193,9 @@ document.getElementById('addStudent').addEventListener('submit', function(event)
         fullName: getFullName(document.getElementById('input-sureName').value, document.getElementById('input-name').value, document.getElementById('input-middleName').value),
         teachStart: document.getElementById('input-startTraining').value,
         faculty: document.getElementById('input-faculty').value,
-        birthday: new Date(document.getElementById('input-birthday').valueAsDate),
-};
+        birthday: new Date(document.getElementById('input-birthday').value),
+    };
+    console.log(new Date(document.getElementById('input-birthday').value));
     studentsList.push(newStudent);
     render(studentsList);
 })
