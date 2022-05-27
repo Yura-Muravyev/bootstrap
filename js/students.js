@@ -10,15 +10,6 @@ let studentsList = [
     birthday: new Date(1994, 6, 9),
     },
 
-    {name: "Владимир",
-    middleName: "Николавеич",
-    sureName: "Кубанов",
-    fullName: "Кубанов Владимир Николавеич",
-    teachStart: 2012,
-    faculty: "Юридический",
-    birthday: new Date(1994, 6, 9),
-    },
-
     {name: "Петр",
     middleName: "Владимирович",
     sureName: "Смирнов",
@@ -47,8 +38,24 @@ let studentsList = [
     },
 ]; 
 
+// получаем форму добавления студента
+const formAddStudent = document.getElementById('addStudent');
+
+// получаем занчения input
+let studentsInput = document.querySelectorAll('.students-input');
+studentsInputBirthday = document.querySelector('.students-input__birthday'),
+studentsInputStartTraining = document.querySelector('.students-input__startTraining');
+
+// получаем заголовки таблицы
 const $studentsListTable = document.getElementById('studentsListTR'), 
 $studentsListTH = document.querySelectorAll('th');
+
+// получаем тело таблицы
+const $students_list = document.getElementById('students-list')
+
+// вспомогательные переменные для определения по какому заголовку кликнули
+let column = '', 
+columnDir = true;
 
 // Соединяем ФИО
 function getFullName(name, middleName, sureName ) {
@@ -80,8 +87,6 @@ function getStudyTime(startTraining) {
 };
 
 // получаем таблицу студентов
-const $students_list = document.getElementById('students-list')
-
 function newStudentTR(student) {
     const $studentTR = document.createElement('tr'),
         $fioTD = document.createElement('td'),
@@ -116,10 +121,41 @@ function getFilterInput() {
     }
 }
 
-// сортировка столбцов таблицы по параметрам
-let column = '', 
-columnDir = true;
 
+function validationEmpetyInpust (inputs) {
+    inputs.forEach ((input) => {    
+        if (input.value.trim() === '') {
+            input.classList.add('error')
+            return false
+        } else {
+            input.classList.remove('error')
+        }
+    })
+}
+
+function validationBirthdayInput(inputs) {
+    const today = new Date();
+    if (inputs.value !== '') {
+        if (getBirthday(inputs.valueAsDate) < '01.01.1900' || getBirthday(inputs.valueAsDate) > getBirthday(today)) {
+            studentsInputBirthday.classList.add('error')
+            alert('Введите корректную дату');
+            return false
+        }
+    }
+}
+
+function validationTeachStartInput(inputs) {
+    const todayYear = new Date();
+    if (inputs.value !== '') {
+        if (getBirthday(inputs.valueAsDate) < '01.01.1900' || getBirthday(inputs.valueAsDate) > getBirthday(today)) {
+            studentsInputBirthday.classList.add('error')
+            alert('Введите корректную дату');
+            return false
+        }
+    }
+}
+
+// сортировка столбцов таблицы по параметрам
 function sortedUsersList(arr, prop, dir) {
     const studentsListCopy = [...arr];
     return studentsListCopy.sort( (studentA,studentB) => {
@@ -161,44 +197,30 @@ function filterUsersList(arr, prop, value) {
     
 }
 
-
 // отрисовка таблицы
 function render(arr) {
     let studentsListCopy = [...arr];
-    
+
     studentsListCopy = sortedUsersList(studentsList, column, columnDir);
 
     studentsListCopy = filterFIO(studentsListCopy, getFilterInput().inputFioValueFilter)
-    // studentsListCopy = filterUsersList(studentsListCopy, 'fullName', getFilterInput().inputFioValueFilter)
     studentsListCopy = filterUsersList(studentsListCopy, 'faculty', getFilterInput().inputFacultyValueFilter)
     studentsListCopy = filterUsersList(studentsListCopy, 'teachStart', getFilterInput().inputTeachStartValueFilter)
     studentsListCopy = filterUsersList(studentsListCopy, 'teachStart', getFilterInput().inputTeachFinishValueFilter)
-
     
-
     $students_list.innerHTML = '';
     for (const student of studentsListCopy) {
         $students_list.append(newStudentTR(student));
     }
 };
 
-
-// получаем данные из формы 
-document.getElementById('addStudent').addEventListener('submit', function(event) {
+function handleFormSubmit(event) {
     event.preventDefault();
-    let newStudent = {
-        name: document.getElementById('input-name').value,
-        middleName: document.getElementById('input-middleName'),
-        sureName: document.getElementById('input-sureName').value,
-        fullName: getFullName(document.getElementById('input-sureName').value, document.getElementById('input-name').value, document.getElementById('input-middleName').value),
-        teachStart: document.getElementById('input-startTraining').value,
-        faculty: document.getElementById('input-faculty').value,
-        birthday: new Date(document.getElementById('input-birthday').value),
-    };
-    console.log(new Date(document.getElementById('input-birthday').value));
-    studentsList.push(newStudent);
-    render(studentsList);
-})
+    
+    validationEmpetyInpust(studentsInput)
+    validationBirthdayInput(studentsInputBirthday)
+    
+}
 
 // события клика по заголовкам таблицы для сортировки
 $studentsListTH.forEach(element => {
@@ -208,6 +230,9 @@ $studentsListTH.forEach(element => {
         render(studentsList);
     })
 })
+
+// Событие клика по конпки добавить студента
+formAddStudent.addEventListener('submit', handleFormSubmit)
 
 // события кнопик фильтрации
 document.getElementById('filter-form').addEventListener('submit', function (event) {

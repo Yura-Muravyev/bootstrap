@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
 </head>
 <body>
@@ -13,28 +14,34 @@
         <form id="addStudent" action="#">
             <div class="row">
                 <label class="col-6 mb-2"> Фамилия 
-                    <input id="input-sureName" class="form-control"  type="text" tabindex="1">
+                    <input name="sureName" id="input-sureName" class="form-control students-input"  type="text" tabindex="1">
+                    <span id="sureName-error"></span>
                 </label>
 
                 <label class="col-6 mb-2"> Факультет 
-                    <input id="input-faculty" class="form-control" type="text" tabindex="4">
+                    <input name="faculty" id="input-faculty" class="form-control students-input" type="text" tabindex="4">
+                    <span id="faculty-error"></span>
                 </label>
     
                 <label class="col-6 mb-2"> Имя 
-                    <input id="input-name" class="form-control"  type="text" tabindex="2">
+                    <input name="name" id="input-name" class="form-control students-input"  type="text" tabindex="2">
+                    <span id="name-error"></span>
                 </label>
     
 
                 <label class="col-6 mb-2"> Дата рождения 
-                    <input id="input-birthday" class="form-control" type="date" tabindex="5">
+                    <input name="birthday" id="input-birthday" class="form-control students-input students-input__birthday" type="date" tabindex="5">
+                    <span id="birthday-error"></span>
                 </label>
     
                 <label class="col-6 mb-2"> Отчество 
-                    <input id="input-middleName" class="form-control" type="text" tabindex="3">
+                    <input name="middleName" id="input-middleName" class="form-control students-input" type="text" tabindex="3">
+                    <span id="middleName-error"></span>
                 </label>
 
                 <label class="col-6 mb-2"> Год поступления 
-                    <input id="input-startTraining" class="form-control" type="number " min="2000" tabindex="6">
+                    <input name="startTraining" id="input-startTraining" class="form-control students-input students-input__startTraining" type="number " min="2000" tabindex="6">
+                    <span id="startTraining-error"></span>
                 </label>
     
                 <div class="btn-group mb-5">
