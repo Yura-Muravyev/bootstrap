@@ -38,13 +38,11 @@ let studentsList = [
     },
 ]; 
 
-// получаем форму добавления студента
-const formAddStudent = document.getElementById('addStudent');
-
-// получаем занчения input
-let studentsInput = document.querySelectorAll('.students-input');
-studentsInputBirthday = document.querySelector('.students-input__birthday'),
-studentsInputStartTraining = document.querySelector('.students-input__startTraining');
+// получаем форму и инпуты
+const formAddStudent = document.getElementById('addStudent')
+const AddStudentSurenameInp = document.getElementById('addStudent-surename')
+const AddStudentNameInp = document.getElementById('addStudent-name')
+const AddStudentMiddlenameInp = document.getElementById('addStudent-middlename')
 
 // получаем заголовки таблицы
 const $studentsListTable = document.getElementById('studentsListTR'), 
@@ -56,6 +54,49 @@ const $students_list = document.getElementById('students-list')
 // вспомогательные переменные для определения по какому заголовку кликнули
 let column = '', 
 columnDir = true;
+
+function checkFormAddStudent() {
+    const addStudentSurenameInpVal = AddStudentSurenameInp.value.trim();
+    const addStudentNameInpVal = AddStudentNameInp.value.trim();
+    const addStudentMiddlenameInpVal = AddStudentMiddlenameInp.value.trim();
+
+    if (addStudentSurenameInpVal === '') {
+        setErrorForm(AddStudentSurenameInp, 'Введите фамилию')
+    } else {
+        setsuccessForm(AddStudentSurenameInp)
+    }
+
+    if (addStudentNameInpVal === '') {
+        setErrorForm(AddStudentNameInp, 'Введите имя')
+    } else {
+        setsuccessForm(AddStudentNameInp)
+    }
+
+    if (addStudentMiddlenameInpVal === '') {
+        setErrorForm(AddStudentMiddlenameInp, 'Введите отчество')
+    } else {
+        setsuccessForm(AddStudentMiddlenameInp)
+    }
+
+}
+function setErrorForm (input, message) {
+    const formControl = input.parentElement;
+    const formInput = formControl.querySelector('.students-input')
+    const textError = formControl.querySelector('.text-error');
+
+    formInput.classList.add('error');
+    textError.textContent = message;
+}
+
+function setsuccessForm(input) {
+    const formControl = input.parentElement;
+    const formInput = formControl.querySelector('.students-input')
+    const textError = formControl.querySelector('.text-error');
+
+    formInput.classList.remove('error');
+    textError.textContent = '';
+}
+
 
 // Соединяем ФИО
 function getFullName(name, middleName, sureName ) {
@@ -107,54 +148,6 @@ function newStudentTR(student) {
     return $studentTR;
 };
 
-function getFilterInput() {
-    const inputFioValueFilter = document.getElementById('filter-fio').value.toLowerCase().trim();
-    const inputFacultyValueFilter = document.getElementById('filter-faculty').value.toLowerCase().trim();
-    const inputTeachStartValueFilter = document.getElementById('filter-teachStart').value.trim();
-    const inputTeachFinishValueFilter = document.getElementById('filter-teachFinish').value.trim();
-
-    return {
-        inputFioValueFilter,
-        inputTeachFinishValueFilter,
-        inputFacultyValueFilter,
-        inputTeachStartValueFilter
-    }
-}
-
-
-function validationEmpetyInpust (inputs) {
-    inputs.forEach ((input) => {    
-        if (input.value.trim() === '') {
-            input.classList.add('error')
-            return false
-        } else {
-            input.classList.remove('error')
-        }
-    })
-}
-
-function validationBirthdayInput(inputs) {
-    const today = new Date();
-    if (inputs.value !== '') {
-        if (getBirthday(inputs.valueAsDate) < '01.01.1900' || getBirthday(inputs.valueAsDate) > getBirthday(today)) {
-            studentsInputBirthday.classList.add('error')
-            alert('Введите корректную дату');
-            return false
-        }
-    }
-}
-
-function validationTeachStartInput(inputs) {
-    const todayYear = new Date();
-    if (inputs.value !== '') {
-        if (getBirthday(inputs.valueAsDate) < '01.01.1900' || getBirthday(inputs.valueAsDate) > getBirthday(today)) {
-            studentsInputBirthday.classList.add('error')
-            alert('Введите корректную дату');
-            return false
-        }
-    }
-}
-
 // сортировка столбцов таблицы по параметрам
 function sortedUsersList(arr, prop, dir) {
     const studentsListCopy = [...arr];
@@ -164,63 +157,17 @@ function sortedUsersList(arr, prop, dir) {
     }); 
 }
 
-function filterFIO(arr, seaObj) {
-    let res = []
-    ListCopy = [...arr];
-    ListCopy.forEach(elem => {
-        let entries = Object.entries(elem);
-
-        for (let [key, value] of entries) {
-            if (String(value).toLocaleLowerCase().includes(seaObj)) {
-                if (res.includes(elem)){
-                } else {
-                    res.push(elem)
-                }
-            }
-       }
-    })
-    return res
-}
-
-
-// фильтрация таблицы
-function filterUsersList(arr, prop, value) {
-    let resultFilter = [];
-    let studentsListCopy = [...arr];
-
-    for (let item of studentsListCopy) {
-        if (String(item[prop]).toLowerCase().includes(String(value))) {
-            resultFilter.push(item);
-        }
-    }
-    return resultFilter
-    
-}
-
 // отрисовка таблицы
 function render(arr) {
     let studentsListCopy = [...arr];
 
     studentsListCopy = sortedUsersList(studentsList, column, columnDir);
-
-    studentsListCopy = filterFIO(studentsListCopy, getFilterInput().inputFioValueFilter)
-    studentsListCopy = filterUsersList(studentsListCopy, 'faculty', getFilterInput().inputFacultyValueFilter)
-    studentsListCopy = filterUsersList(studentsListCopy, 'teachStart', getFilterInput().inputTeachStartValueFilter)
-    studentsListCopy = filterUsersList(studentsListCopy, 'teachStart', getFilterInput().inputTeachFinishValueFilter)
     
     $students_list.innerHTML = '';
     for (const student of studentsListCopy) {
         $students_list.append(newStudentTR(student));
     }
 };
-
-function handleFormSubmit(event) {
-    event.preventDefault();
-    
-    validationEmpetyInpust(studentsInput)
-    validationBirthdayInput(studentsInputBirthday)
-    
-}
 
 // события клика по заголовкам таблицы для сортировки
 $studentsListTH.forEach(element => {
@@ -232,12 +179,16 @@ $studentsListTH.forEach(element => {
 })
 
 // Событие клика по конпки добавить студента
-formAddStudent.addEventListener('submit', handleFormSubmit)
-
-// события кнопик фильтрации
-document.getElementById('filter-form').addEventListener('submit', function (event) {
+formAddStudent.addEventListener('submit', function (event) {
     event.preventDefault();
-    render(studentsList)
-    
+    checkFormAddStudent();
 })
+
+// // события кнопик фильтрации
+// document.getElementById('filter-form').addEventListener('submit', function (event) {
+//     event.preventDefault();
+//     render(studentsList)
+    
+// })
+
 render(studentsList);

@@ -1,3 +1,12 @@
+.form-control {
+    position: relative;
+}
+
+.students-input {
+    display: block;
+    width: 50%;
+}
+
 .error {
     border: 1px solid red;
 }

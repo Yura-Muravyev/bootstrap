@@ -10,69 +10,40 @@
 </head>
 <body>
     <div class="container">
-
         <form id="addStudent" action="#">
-            <div class="row">
-                <label class="col-6 mb-2"> Фамилия 
-                    <input name="sureName" id="input-sureName" class="form-control students-input"  type="text" tabindex="1">
-                    <span id="sureName-error"></span>
-                </label>
-
-                <label class="col-6 mb-2"> Факультет 
-                    <input name="faculty" id="input-faculty" class="form-control students-input" type="text" tabindex="4">
-                    <span id="faculty-error"></span>
-                </label>
-    
-                <label class="col-6 mb-2"> Имя 
-                    <input name="name" id="input-name" class="form-control students-input"  type="text" tabindex="2">
-                    <span id="name-error"></span>
-                </label>
-    
-
-                <label class="col-6 mb-2"> Дата рождения 
-                    <input name="birthday" id="input-birthday" class="form-control students-input students-input__birthday" type="date" tabindex="5">
-                    <span id="birthday-error"></span>
-                </label>
-    
-                <label class="col-6 mb-2"> Отчество 
-                    <input name="middleName" id="input-middleName" class="form-control students-input" type="text" tabindex="3">
-                    <span id="middleName-error"></span>
-                </label>
-
-                <label class="col-6 mb-2"> Год поступления 
-                    <input name="startTraining" id="input-startTraining" class="form-control students-input students-input__startTraining" type="number " min="2000" tabindex="6">
-                    <span id="startTraining-error"></span>
-                </label>
-    
-                <div class="btn-group mb-5">
-                    <button class="btn btn-primary" type="submit">Добавить</button>
-                    <button class="btn btn-secondary" type="reset">Очистить</button>
-                </div>
+            <div class="form-control-sm mb-2">
+                <label for="addStudent-surename" class=""> Фамилия</label>
+                <input id="addStudent-surename" class="students-input"  type="text" >
+                <span class="text-error"></span>
             </div>
-        </form>
 
-        <form id="filter-form"    action="#" class="" id="filter">
-            <span>Поиск по таблице</span>
-            <input class="form-contol" id="filter-fio" type="text" placeholder="ФИО">                      
-            <input class="form-contol" id="filter-faculty" type="text" placeholder="Факультет">            
-            <input class="form-contol" id="filter-teachStart" type="number" placeholder="Год начала обучения"> 
-            <input class="form-contol" id="filter-teachFinish" type="number" placeholder="Год окончания обучения"> 
-            <button class="btn btn-primary" id="filterBtn" type="submit">Найти</button>                   
-        </form>
+            <div class="form-control-sm mb-2">
+                <label for="addStudent-name" class="">Имя</label>
+                <input id="addStudent-name" class="students-input"  type="text" >
+                <span class="text-error"></span>
+            </div>
 
+            <div class="form-control-sm mb-2">
+                <label for="addStudent-middlename" class="">Отчество</label>
+                <input id="addStudent-middlename" class="students-input"  type="text" >
+                <span class="text-error"></span>
+            </div>
+
+            <button class="btn btn-dark"  type="submit">Добавить</button>
+        </form>
 
         <table class="table">
             <thead>
-              <tr id="studentsListTR">
+                <tr id="studentsListTR">
                 <th data-column="fullName" scope="col">ФИО</th>
                 <th data-column="birthday" scope="col">Дата рождения</th>
                 <th data-column="faculty" scope="col">Факультет</th>
                 <th data-column="teachStart" scope="col">Годы обучения</th>
-              </tr>
+                </tr>
             </thead>
             <tbody id="students-list">
             </tbody>
-          </table>
+        </table>
     </div>
 
 
