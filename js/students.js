@@ -4,7 +4,6 @@ let studentsList = [
     {name: "Владимир",
     middleName: "Николавеич",
     sureName: "Кубанов",
-    fullName: "Кубанов Владимир Николавеич",
     teachStart: 2012,
     faculty: "Юридический",
     birthday: new Date(1994, 6, 9),
@@ -13,7 +12,6 @@ let studentsList = [
     {name: "Петр",
     middleName: "Владимирович",
     sureName: "Смирнов",
-    fullName: "Смирнов Петр Владимирович",
     teachStart: 2018,
     faculty: "Исторический",
     birthday: new Date(1993, 10, 25),
@@ -22,7 +20,6 @@ let studentsList = [
     {name: "Игорь",
     middleName: "Борисович",
     sureName: "Мельников",
-    fullName: "Мельников Игорь Борисович",
     teachStart: 2020,
     faculty: "Юридический",
     birthday: new Date(2000, 3, 9),
@@ -31,7 +28,6 @@ let studentsList = [
     {name: "Иван",
     middleName: "Иванович",
     sureName: "Иванов",
-    fullName: "Иванов Иван Иванович",
     teachStart: 2004,
     faculty: "Исторический",
     birthday: new Date(1988, 11, 25),
@@ -40,9 +36,12 @@ let studentsList = [
 
 // получаем форму и инпуты
 const formAddStudent = document.getElementById('addStudent')
-const AddStudentSurenameInp = document.getElementById('addStudent-surename')
-const AddStudentNameInp = document.getElementById('addStudent-name')
-const AddStudentMiddlenameInp = document.getElementById('addStudent-middlename')
+const AddStudentSurenameInp = document.getElementById('addStudent-surename');
+const AddStudentNameInp = document.getElementById('addStudent-name');
+const AddStudentMiddlenameInp = document.getElementById('addStudent-middlename');
+const AddStudentBirthdateInp = document.getElementById('addStudent-birthdate');
+const AddStudentFacultyInp = document.getElementById('addStudent-faculty');
+const AddStudentBeginningStudyInp = document.getElementById('addStudent-beginningStudy');
 
 // получаем заголовки таблицы
 const $studentsListTable = document.getElementById('studentsListTR'), 
@@ -55,30 +54,84 @@ const $students_list = document.getElementById('students-list')
 let column = '', 
 columnDir = true;
 
+// валидация полей ввода
 function checkFormAddStudent() {
+
+    let FLAGVALIDATION = 0;
     const addStudentSurenameInpVal = AddStudentSurenameInp.value.trim();
     const addStudentNameInpVal = AddStudentNameInp.value.trim();
     const addStudentMiddlenameInpVal = AddStudentMiddlenameInp.value.trim();
+    const addStudentBirthdateInpVal = AddStudentBirthdateInp.valueAsDate;
+    const addStudentFacultyInpVal = AddStudentFacultyInp.value.trim();
+    const addStudentBeginningStudyInpVal = AddStudentBeginningStudyInp.value.trim();
 
+
+    // проверки ФИО
     if (addStudentSurenameInpVal === '') {
-        setErrorForm(AddStudentSurenameInp, 'Введите фамилию')
+        setErrorForm(AddStudentSurenameInp, 'Введите фамилию');
+        FLAGVALIDATION++;
     } else {
         setsuccessForm(AddStudentSurenameInp)
     }
-
     if (addStudentNameInpVal === '') {
-        setErrorForm(AddStudentNameInp, 'Введите имя')
+        setErrorForm(AddStudentNameInp, 'Введите имя');
+        FLAGVALIDATION++;
     } else {
-        setsuccessForm(AddStudentNameInp)
+        setsuccessForm(AddStudentNameInp);
     }
 
     if (addStudentMiddlenameInpVal === '') {
-        setErrorForm(AddStudentMiddlenameInp, 'Введите отчество')
+        setErrorForm(AddStudentMiddlenameInp, 'Введите отчество');
+        FLAGVALIDATION++;
     } else {
-        setsuccessForm(AddStudentMiddlenameInp)
+        setsuccessForm(AddStudentMiddlenameInp);
     }
 
+    // Проверка даты рождения
+    if (addStudentBirthdateInpVal === null) {
+        setErrorForm(AddStudentBirthdateInp, 'Введите дату рождения');
+        FLAGVALIDATION++;
+    } else {
+        setsuccessForm(AddStudentBirthdateInp);
+    }
+    
+
+    // if (addStudentBirthdateInpVal === null) {
+    //     setErrorForm(AddStudentBirthdateInp, 'Введите дату рождения');
+    //     FLAGVALIDATION++;
+    // } else {
+    //     setsuccessForm(AddStudentBirthdateInp);
+    }
+    // Проверка факультета
+    if (addStudentFacultyInpVal === '') {
+        setErrorForm(AddStudentFacultyInp, 'Введите факультет');
+        FLAGVALIDATION++;
+    } else {
+        setsuccessForm(AddStudentFacultyInp);
+    }
+    // провыерка года начала обучения
+    if (addStudentBeginningStudyInpVal === '') {
+        setErrorForm(AddStudentBeginningStudyInp, 'Введите год начала обучения');
+        FLAGVALIDATION++;
+    } else {
+        setsuccessForm(AddStudentBeginningStudyInp);
+    }
+    
+    if (FLAGVALIDATION === 0) {
+        const student  = 
+            {name: addStudentNameInpVal,
+            middleName: addStudentMiddlenameInpVal,
+            sureName: addStudentSurenameInpVal,
+            teachStart: addStudentBeginningStudyInpVal,
+            faculty: addStudentFacultyInpVal,
+            birthday: addStudentBirthdateInpVal,
+            }
+        studentsList.push(student);
+        formAddStudent.reset();
+        render(studentsList);
+    } 
 }
+
 function setErrorForm (input, message) {
     const formControl = input.parentElement;
     const formInput = formControl.querySelector('.students-input')
@@ -135,7 +188,7 @@ function newStudentTR(student) {
         $facultyTD = document.createElement('td'),
         $teachStartTD = document.createElement('td')
 
-    $fioTD.textContent = student['fullName']
+    $fioTD.textContent = getFullName(student['name'], student['middleName'], student['sureName'])  
     $birthdayTD.textContent = getBirthday(student['birthday']) + getAge(student['birthday']);
     $facultyTD.textContent = student['faculty'];
     $teachStartTD.textContent = getStudyTime(student['teachStart']);
@@ -182,6 +235,7 @@ $studentsListTH.forEach(element => {
 formAddStudent.addEventListener('submit', function (event) {
     event.preventDefault();
     checkFormAddStudent();
+    render(studentsList);
 })
 
 // // события кнопик фильтрации
