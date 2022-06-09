@@ -34,14 +34,23 @@ let studentsList = [
     },
 ]; 
 
-// получаем форму и инпуты
+// получаем форму и инпуты добавления студента
 const formAddStudent = document.getElementById('addStudent')
+
 const AddStudentSurenameInp = document.getElementById('addStudent-surename');
 const AddStudentNameInp = document.getElementById('addStudent-name');
 const AddStudentMiddlenameInp = document.getElementById('addStudent-middlename');
 const AddStudentBirthdateInp = document.getElementById('addStudent-birthdate');
 const AddStudentFacultyInp = document.getElementById('addStudent-faculty');
 const AddStudentBeginningStudyInp = document.getElementById('addStudent-beginningStudy');
+
+// получаем форму и инпуты филтрации
+const formFilterStudent = document.getElementById('filterForm')
+
+const FilterStudentFIOInp = document.getElementById('filterFIO');
+const FilterStudentFacultyInp = document.getElementById('filterFaculty');
+const FilterStudentBeginningStudyInp = document.getElementById('filterbeginningStudy');
+const FilterStudentFinishStudyInp = document.getElementById('filterFinishStudy');
 
 // получаем заголовки таблицы
 const $studentsListTable = document.getElementById('studentsListTR'), 
@@ -64,7 +73,6 @@ function checkFormAddStudent() {
     const addStudentBirthdateInpVal = AddStudentBirthdateInp.valueAsDate;
     const addStudentFacultyInpVal = AddStudentFacultyInp.value.trim();
     const addStudentBeginningStudyInpVal = AddStudentBeginningStudyInp.value.trim();
-
 
     // проверки ФИО
     if (addStudentSurenameInpVal === '') {
@@ -101,7 +109,7 @@ function checkFormAddStudent() {
     //     FLAGVALIDATION++;
     // } else {
     //     setsuccessForm(AddStudentBirthdateInp);
-    }
+    // }
     // Проверка факультета
     if (addStudentFacultyInpVal === '') {
         setErrorForm(AddStudentFacultyInp, 'Введите факультет');
@@ -149,7 +157,6 @@ function setsuccessForm(input) {
     formInput.classList.remove('error');
     textError.textContent = '';
 }
-
 
 // Соединяем ФИО
 function getFullName(name, middleName, sureName ) {
@@ -210,11 +217,53 @@ function sortedUsersList(arr, prop, dir) {
     }); 
 }
 
+// фильтрация по ФИО
+function filterFIO(arr, inpFilterFIO) {
+    const studentsListCopy = [...arr];
+    const filterList = [];
+    
+    for (const student of studentsListCopy) {
+        if (getFullName(student['name'], student['middleName'], student['sureName']).toLowerCase().trim().includes(inpFilterFIO.toLowerCase().trim())) {
+            filterList.push(student);
+        }
+    }
+    return filterList;
+};
+
+function filteFraculty(arr,inpFilterFaculty) {
+    const studentsListCopy = [...arr];
+    const filterList = [];
+    
+    for (const student of studentsListCopy) {
+        if (student['faculty'].toLowerCase().trim().includes(inpFilterFaculty.toLowerCase().trim())) {
+            filterList.push(student);
+        }
+    }
+    return filterList;
+};
+
+function filtebeginningStudy(arr,inpStudentBeginning) {
+    const studentsListCopy = [...arr];
+    const filterList = [];
+    
+    for (const student of studentsListCopy) {
+        if (toString(student['teachStart']).includes(toString(inpStudentBeginning))) {
+            console.log(typeof toString(inpStudentBeginning) + ' sdfdsf');
+            filterList.push(student);
+        }
+    }
+    return filterList;
+};
+
 // отрисовка таблицы
 function render(arr) {
     let studentsListCopy = [...arr];
-
+    studentsListCopy = filterFIO(studentsList, FilterStudentFIOInp.value);
     studentsListCopy = sortedUsersList(studentsList, column, columnDir);
+    
+    // studentsListCopy = filteFraculty(studentsList, FilterStudentFacultyInp.value);
+    // studentsListCopy = filtebeginningStudy(studentsList, FilterStudentBeginningStudyInp.value);
+    console.log('object');
     
     $students_list.innerHTML = '';
     for (const student of studentsListCopy) {
@@ -227,6 +276,7 @@ $studentsListTH.forEach(element => {
     element.addEventListener('click', function () {
         column = this.dataset.column;
         columnDir = !columnDir
+        console.log(columnDir);
         render(studentsList);
     })
 })
@@ -235,14 +285,12 @@ $studentsListTH.forEach(element => {
 formAddStudent.addEventListener('submit', function (event) {
     event.preventDefault();
     checkFormAddStudent();
-    render(studentsList);
 })
 
-// // события кнопик фильтрации
-// document.getElementById('filter-form').addEventListener('submit', function (event) {
-//     event.preventDefault();
-//     render(studentsList)
+// события кнопик фильтрации
+document.getElementById('filterForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    render(studentsList)
     
-// })
-
+})
 render(studentsList);
