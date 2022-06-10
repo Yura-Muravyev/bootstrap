@@ -104,12 +104,12 @@ function checkFormAddStudent() {
     }
     
 
-    // if (addStudentBirthdateInpVal === null) {
-    //     setErrorForm(AddStudentBirthdateInp, 'Введите дату рождения');
-    //     FLAGVALIDATION++;
-    // } else {
-    //     setsuccessForm(AddStudentBirthdateInp);
-    // }
+    if (addStudentBirthdateInpVal === null) {
+        setErrorForm(AddStudentBirthdateInp, 'Введите дату рождения');
+        FLAGVALIDATION++;
+    } else {
+        setsuccessForm(AddStudentBirthdateInp);
+    }
     // Проверка факультета
     if (addStudentFacultyInpVal === '') {
         setErrorForm(AddStudentFacultyInp, 'Введите факультет');
@@ -229,8 +229,8 @@ function filterFIO(arr, inpFilterFIO) {
     }
     return filterList;
 };
-
-function filteFraculty(arr,inpFilterFaculty) {
+// фильтрация по Факультету
+function filterFraculty(arr,inpFilterFaculty) {
     const studentsListCopy = [...arr];
     const filterList = [];
     
@@ -242,28 +242,50 @@ function filteFraculty(arr,inpFilterFaculty) {
     return filterList;
 };
 
-function filtebeginningStudy(arr,inpStudentBeginning) {
-    const studentsListCopy = [...arr];
-    const filterList = [];
-    
-    for (const student of studentsListCopy) {
-        if (toString(student['teachStart']).includes(toString(inpStudentBeginning))) {
-            console.log(typeof toString(inpStudentBeginning) + ' sdfdsf');
-            filterList.push(student);
+// фильтрация по Году начала обучения
+function filterFinishStudy(arr,inpStudentBeginning) {
+    let studentsListCopy = [...arr];
+    let filtertList = [];
+    if (inpStudentBeginning === '') {
+        filtertList = [...arr];
+    } else {
+        for (const student of studentsListCopy) {
+            if (student['teachStart'] === +inpStudentBeginning) {
+                filtertList.push(student)
+            }
         }
     }
-    return filterList;
+
+    return filtertList
+};
+
+// фильтрация по Году окончания обучения
+function filterBeginningStudy(arr,inpStudentFinish) {
+    let studentsListCopy = [...arr];
+    let filtertList = [];
+    console.log(inpStudentFinish);
+    if (inpStudentFinish === '') {
+        filtertList = [...arr];
+    } else {
+        for (const student of studentsListCopy) {
+            if (student['teachStart'] === (+inpStudentFinish-4)) {
+                filtertList.push(student)
+            }
+        }
+    }
+
+    return filtertList
 };
 
 // отрисовка таблицы
 function render(arr) {
     let studentsListCopy = [...arr];
-    studentsListCopy = filterFIO(studentsList, FilterStudentFIOInp.value);
-    studentsListCopy = sortedUsersList(studentsList, column, columnDir);
+    studentsListCopy = filterFIO(studentsListCopy, FilterStudentFIOInp.value);
+    studentsListCopy = sortedUsersList(studentsListCopy, column, columnDir);
     
-    // studentsListCopy = filteFraculty(studentsList, FilterStudentFacultyInp.value);
-    // studentsListCopy = filtebeginningStudy(studentsList, FilterStudentBeginningStudyInp.value);
-    console.log('object');
+    studentsListCopy = filterFraculty(studentsListCopy, FilterStudentFacultyInp.value);
+    studentsListCopy = filterBeginningStudy(studentsListCopy, FilterStudentBeginningStudyInp.value);
+    studentsListCopy = filterFinishStudy(studentsListCopy, FilterStudentFinishStudyInp.value);
     
     $students_list.innerHTML = '';
     for (const student of studentsListCopy) {
@@ -275,8 +297,7 @@ function render(arr) {
 $studentsListTH.forEach(element => {
     element.addEventListener('click', function () {
         column = this.dataset.column;
-        columnDir = !columnDir
-        console.log(columnDir);
+        columnDir = !columnDir;
         render(studentsList);
     })
 })
