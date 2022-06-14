@@ -4,13 +4,13 @@
 
 .students-input {
     display: block;
-    width: 50%;
+    width: 100%;
 }
 
 .error {
     border: 1px solid red;
 }
 .text-error {
-    font-size: 12x;
+    font-size: 8x;
     color: red;
 }

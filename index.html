@@ -12,45 +12,48 @@
 
 <body>
     <div class="container">
-        <form id="addStudent" action="#">
-            <div class="form-control-sm mb-2">
+        <div class="container">
+
+        </div>
+        <form id="addStudent" action="#" class="row add-student-form" novalidate>
+            <div class="col-2 mb-2">
                 <label for="addStudent-surename" class=""> Фамилия</label>
-                <input id="addStudent-surename" class="students-input" type="text">
+                <input id="addStudent-surename" class="form-control students-input" type="text">
                 <span class="text-error"></span>
             </div>
 
-            <div class="form-control-sm mb-2">
+            <div class="col-2 mb-2">
                 <label for="addStudent-name" class="">Имя</label>
-                <input id="addStudent-name" class="students-input" type="text">
+                <input id="addStudent-name" class="form-control students-input" type="text">
                 <span class="text-error"></span>
             </div>
 
-            <div class="form-control-sm mb-2">
+            <div class="col-2 mb-2">
                 <label for="addStudent-middlename" class="">Отчество</label>
-                <input id="addStudent-middlename" class="students-input " type="text">
+                <input id="addStudent-middlename" class="form-control students-input " type="text">
                 <span class="text-error"></span>
             </div>
 
-            <div class="form-control-sm mb-2">
+            <div class="col-2 mb-2">
                 <label for="addStudent-birthdate" class="">Дата рождения</label>
-                <input id="addStudent-birthdate" class="students-input" type="date">
+                <input id="addStudent-birthdate" class="form-control students-input" type="date">
                 <span class="text-error"></span>
             </div>
 
-            <div class="form-control-sm mb-2">
+            <div class="col-2 mb-2">
                 <label for="addStudent-faculty" class="">Факультет</label>
-                <input id="addStudent-faculty" class="students-input" type="text">
+                <input id="addStudent-faculty" class="form-control students-input" type="text">
                 <span class="text-error"></span>
             </div>
 
 
-            <div class="form-control-sm mb-2">
+            <div class="col-2 mb-2">
                 <label for="addStudent-beginningStudy" class="">Год начала обучения</label>
-                <input id="addStudent-beginningStudy" class="students-input" type="number" min="2000">
+                <input id="addStudent-beginningStudy" class="form-control students-input" type="number" min="2000">
                 <span class="text-error"></span>
             </div>
 
-            <button class="btn btn-dark mb-3" type="submit">Добавить</button>
+            <button class="btn btn-success mb-5" type="submit">Добавить</button>
         </form>
 
         <form action="" id="filterForm" class="">
@@ -85,9 +88,6 @@
             </tbody>
         </table>
     </div>
-
-
-
 
     <script defer src="./js/students.js"></script>
 </body>

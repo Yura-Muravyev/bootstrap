@@ -67,6 +67,8 @@ columnDir = true;
 function checkFormAddStudent() {
 
     let FLAGVALIDATION = 0;
+
+    const presentDay = new Date();
     const addStudentSurenameInpVal = AddStudentSurenameInp.value.trim();
     const addStudentNameInpVal = AddStudentNameInp.value.trim();
     const addStudentMiddlenameInpVal = AddStudentMiddlenameInp.value.trim();
@@ -99,17 +101,13 @@ function checkFormAddStudent() {
     if (addStudentBirthdateInpVal === null) {
         setErrorForm(AddStudentBirthdateInp, 'Введите дату рождения');
         FLAGVALIDATION++;
-    } else {
-        setsuccessForm(AddStudentBirthdateInp);
-    }
-    
-
-    if (addStudentBirthdateInpVal === null) {
-        setErrorForm(AddStudentBirthdateInp, 'Введите дату рождения');
+    } else if (addStudentBirthdateInpVal.getFullYear() < 1900 ||addStudentBirthdateInpVal.getFullYear() >= presentDay.getFullYear()) {
+        setErrorForm(AddStudentBirthdateInp, `Год рождения должен быть в диапазоне: 1900 - ${presentDay.getFullYear()}`);
         FLAGVALIDATION++;
     } else {
         setsuccessForm(AddStudentBirthdateInp);
     }
+    
     // Проверка факультета
     if (addStudentFacultyInpVal === '') {
         setErrorForm(AddStudentFacultyInp, 'Введите факультет');
@@ -117,10 +115,13 @@ function checkFormAddStudent() {
     } else {
         setsuccessForm(AddStudentFacultyInp);
     }
+
     // провыерка года начала обучения
     if (addStudentBeginningStudyInpVal === '') {
         setErrorForm(AddStudentBeginningStudyInp, 'Введите год начала обучения');
         FLAGVALIDATION++;
+    } else if (addStudentBeginningStudyInpVal < 2000 || addStudentBeginningStudyInpVal >= presentDay.getFullYear()) {
+        setErrorForm(AddStudentBeginningStudyInp, `Год рождения должен быть в диапазоне: 2000 - ${presentDay.getFullYear()}`);
     } else {
         setsuccessForm(AddStudentBeginningStudyInp);
     }
@@ -281,11 +282,11 @@ function filterBeginningStudy(arr,inpStudentFinish) {
 function render(arr) {
     let studentsListCopy = [...arr];
     studentsListCopy = filterFIO(studentsListCopy, FilterStudentFIOInp.value);
-    studentsListCopy = sortedUsersList(studentsListCopy, column, columnDir);
-    
     studentsListCopy = filterFraculty(studentsListCopy, FilterStudentFacultyInp.value);
     studentsListCopy = filterBeginningStudy(studentsListCopy, FilterStudentBeginningStudyInp.value);
     studentsListCopy = filterFinishStudy(studentsListCopy, FilterStudentFinishStudyInp.value);
+
+    studentsListCopy = sortedUsersList(studentsListCopy, column, columnDir);
     
     $students_list.innerHTML = '';
     for (const student of studentsListCopy) {
@@ -298,6 +299,9 @@ $studentsListTH.forEach(element => {
     element.addEventListener('click', function () {
         column = this.dataset.column;
         columnDir = !columnDir;
+
+        console.log(column);
+
         render(studentsList);
     })
 })
